@@ -16,7 +16,7 @@
     "enigmas"
   ],
   "author": "L.Draescher, V.Dusart",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^12.5.3"
   }
