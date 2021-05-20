@@ -1,0 +1,24 @@
+{
+  "name": "enigma-bot",
+  "version": "1.0.0",
+  "description": "A discord bot to help manage capaural's enigmas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.etude.eisti.fr:capaural/enigma-bot.git"
+  },
+  "keywords": [
+    "bot",
+    "discord",
+    "enigmas"
+  ],
+  "author": "L.Draescher, V.Dusart",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.5.3"
+  },
+  "devDependencies": {}
+}
