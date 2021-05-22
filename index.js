@@ -3,15 +3,25 @@ const admin = require('firebase-admin');
 const serviceAccount = require('./private/firebase.json');
 const { bot_token } = require('./private/creds.json');
 
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://capaural-717e1.firebaseio.com"
 });
 
+const db = admin.database().ref('/enigmas');
+db.on('value', (snapshot) => {
+  console.log(snapshot.val());
+
+  global.enigmas = snapshot.val();
+  // global.teams = snapshot.val()[teams];
+});
 
 // Import all the functions
 const utils = require('./utils/utils');
 const help = require('./commands/help');
+const teams = require('./commands/teams');
+const contact = require('./commands/contact');
 
 
 const prefix = '-enigma';
@@ -21,33 +31,41 @@ client.once('ready', () => {
 });
 
 
+const commands_not_in_dm = {
+  'contact': contact.triggerMessage,
+  'help': help.helpMessage,
+}
+
+const commands_in_dm = {
+  'create': teams.createTeam,
+  'help': help.helpMessage,
+}
+
+
 client.on('message', message => {
-  // Safety checks
-  if (!message.content.startsWith(prefix) || message.author.bot) {
+  
+  const isDM = message.channel.type == "dm";
+  if ((!isDM && !message.content.startsWith(prefix)) || message.author.bot) {
     return;
   }
 
-  // Get commands :
-  const args = message.content.slice(prefix.length).split(' ');
-  const command = args.shift().toLowerCase();
-
-  if (message.channel.type == "dm") {
-
-  } else {
-
-    switch (command) {
-      case "dm me":
-        message.author.send("Oui mon petit coco ?");
-        break;
-      case "-leaderboard":
-        message.send("Leaderboard:");
-        break;
-      case "-infos":
-        message.send("Affiche des infos sur les différents groupes, voir autres choses...");
-      default:
-        help.helpMessage(message);
-    }
+  const args = message.content.split(' ');
+  if (args[0] == prefix) {
+    args.shift();
   }
+
+  const command = args.shift().toLowerCase();
+  const parameters = args.join(' ').toLowerCase();
+
+  const function_params = {
+    message: message,
+    db: db,
+  }
+
+  const map = isDM ? commands_in_dm : commands_not_in_dm;
+  const type = (map[command] !== undefined) ? command : 'help';
+  map[type](function_params);
+
 });
 
 client.login(bot_token);

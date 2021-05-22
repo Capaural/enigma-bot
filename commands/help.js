@@ -1,4 +1,4 @@
-exports.helpMessage = (msg) => {
+exports.helpMessage = (params) => {
   const res = "Bienvenue dans l'aide du Bot Enigma";
-  msg.channel.send(res);
+  params.message.channel.send(res);
 }
