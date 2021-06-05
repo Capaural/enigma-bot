@@ -9,12 +9,20 @@ admin.initializeApp({
   databaseURL: "https://capaural-717e1.firebaseio.com"
 });
 
-const db = admin.database().ref('/enigmas');
-db.on('value', (snapshot) => {
-  console.log(snapshot.val());
+const db = admin.database();
+db.ref('/enigmas').on('value', (snapshot) => {
+  // console.log("Change in DB:")
+  // console.log(snapshot.val());
 
-  global.enigmas = snapshot.val();
-  // global.teams = snapshot.val()[teams];
+  const data = snapshot.val();
+  if (data) {
+    global.enigmas = data;
+    global.teams = [];
+    for (var i in data.teams) {
+      global.teams.push(data.teams[i]);
+    }
+    console.log(global.teams);
+  }
 });
 
 // Import all the functions
@@ -38,6 +46,8 @@ const commands_not_in_dm = {
 
 const commands_in_dm = {
   'create': teams.createTeam,
+  'join': teams.joinTeam,
+  'infos': teams.infosTeam,
   'help': help.helpMessage,
 }
 
@@ -65,7 +75,6 @@ client.on('message', message => {
   const map = isDM ? commands_in_dm : commands_not_in_dm;
   const type = (map[command] !== undefined) ? command : 'help';
   map[type](function_params);
-
 });
 
 client.login(bot_token);
