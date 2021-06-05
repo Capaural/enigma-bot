@@ -20,7 +20,8 @@
   "dependencies": {
     "discord.js": "^12.5.3",
     "firebase": "^8.6.2",
-    "firebase-admin": "^9.8.0"
+    "firebase-admin": "^9.8.0",
+    "node": "^12.22.1"
   },
   "devDependencies": {
     "eslint": "^7.27.0"
