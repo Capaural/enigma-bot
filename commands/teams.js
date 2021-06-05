@@ -174,6 +174,10 @@ exports.infosTeam = (params) => {
           value: team.name
         },
         {
+          name: 'Code de votre équipe',
+          value: team.teamID
+        },
+        {
           name: 'Score',
           value: team.score
         },

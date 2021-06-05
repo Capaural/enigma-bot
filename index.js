@@ -48,7 +48,7 @@ const commands_in_dm = {
   'create': teams.createTeam,
   'join': teams.joinTeam,
   'infos': teams.infosTeam,
-  'help': help.helpMessage,
+  'help': help.DMHelpMessage,
 }
 
 
