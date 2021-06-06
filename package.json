@@ -18,9 +18,11 @@
   "author": "L.Draescher, V.Dusart",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.21.1",
     "discord.js": "^12.5.3",
     "firebase": "^8.6.2",
     "firebase-admin": "^9.8.0",
+    "https": "^1.0.0",
     "node": "^12.22.1"
   },
   "devDependencies": {

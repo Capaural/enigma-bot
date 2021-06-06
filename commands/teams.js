@@ -14,7 +14,7 @@ exports.createTeam = (params) => {
 
   const teamName = args[1];
 
-  if (teamName.length > 30) {
+  if (teamName.length > 31) {
     msg.author.send('Call the help function here');
     return;
   }
@@ -41,7 +41,7 @@ exports.createTeam = (params) => {
     teamID = Math.random().toString(36).substring(7).toUpperCase();
   }
 
-  const newTeam = new Team(teamName, 0, teamID, {[msg.author.id]: new Player(msg.author.id, msg.author.username)});
+  const newTeam = new Team(teamName, 0, teamID, { [msg.author.id]: new Player(msg.author.id, msg.author.username) });
 
   db.ref('/enigmas/teams/').child(teamID).set(newTeam.toJSON(), function (error) {
     if (error) {
@@ -107,18 +107,18 @@ exports.joinTeam = (params) => {
       description: 'Ce code d\'équipe n\'existe pas...',
     }
     msg.author.send({ embed: embedMsg });
-    return ;
+    return;
   }
-  
+
   foundedTeam = Team.fromJSON(foundedTeam[0]);
-  
+
   if (foundedTeam.players.length == 2) {
     embedMsg = {
       title: 'Erreur',
       description: 'Cette équipe est déjà pleine',
     }
     msg.author.send({ embed: embedMsg });
-    return ;
+    return;
   }
   foundedTeam.players[msg.author.id] = new Player(msg.author.id, msg.author.username);
 
@@ -134,7 +134,7 @@ exports.joinTeam = (params) => {
     title: 'Félications',
     description: 'Vous venez de rejoindre l\'équipe des ' + foundedTeam.name + '\nBonne chance pour les épreuves!',
   }
-  msg.author.send({ embed: embedMsg });  
+  msg.author.send({ embed: embedMsg });
 }
 
 
@@ -189,5 +189,5 @@ exports.infosTeam = (params) => {
     }
 
   }
-  msg.author.send({ embed: embedMsg });  
+  msg.author.send({ embed: embedMsg });
 }

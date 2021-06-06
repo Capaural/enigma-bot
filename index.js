@@ -30,6 +30,12 @@ const utils = require('./utils/utils');
 const help = require('./commands/help');
 const teams = require('./commands/teams');
 const contact = require('./commands/contact');
+const report = require('./commands/report');
+const submit = require('./commands/submit');
+const admin_commands = require('./commands/admin');
+
+const timeBetweenSubmit = 10;
+global.users = {}
 
 
 const prefix = '-enigma';
@@ -42,18 +48,21 @@ client.once('ready', () => {
 const commands_not_in_dm = {
   'contact': contact.triggerMessage,
   'help': help.helpMessage,
+  'sendtemplate': admin_commands.sendTemplate,
 }
 
 const commands_in_dm = {
   'create': teams.createTeam,
   'join': teams.joinTeam,
   'infos': teams.infosTeam,
+  'report': report.report,
+  'submit': submit.submitAnswer,
   'help': help.DMHelpMessage,
 }
 
 
 client.on('message', message => {
-  
+
   const isDM = message.channel.type == "dm";
   if ((!isDM && !message.content.startsWith(prefix)) || message.author.bot) {
     return;

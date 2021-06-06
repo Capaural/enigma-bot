@@ -1,9 +1,0 @@
-On ne peut pas envoyer un dm à nimporte qui en fonction de son id
-On a donc plusieurs solutions:
-    1- La plus simple (je trouve qu'elle est suffisante)
-        On ne demande pas au créateur de la team si il est ok pour que l'autre rejoigne la team
-        Uniquement avec un code qui est long et impossible à trouver
-
-    2. On ne peut envoyer un message au gens que si ils sont dans le cache du bot.
-        Soit on fait en sorte de ne jamais redemarrer le bot (mauvaise idée je pense parce qu'on va faire des modifs c'est sur)
-        Soit on save le cache du bot dans un fichier et comme ca quand il se relance il va chercher le cache du fichier (pas sur que ca soit possible)
