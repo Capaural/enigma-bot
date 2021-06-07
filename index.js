@@ -79,6 +79,7 @@ client.on('message', message => {
   const function_params = {
     message: message,
     db: db,
+    client: client
   }
 
   const map = isDM ? commands_in_dm : commands_not_in_dm;
