@@ -191,3 +191,20 @@ exports.infosTeam = (params) => {
   }
   msg.author.send({ embed: embedMsg });
 }
+
+exports.leaderboard = (params) => {
+  const icons = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"];
+
+  let embedMsg = {
+    title: 'Leaderboard',
+    description: '',
+    color: "#6200EE"
+  };
+
+  for (let i = 0; i < Math.min(10,global.teams.length); i++) {
+    const team = global.teams[i];
+    embedMsg.description += icons[i] + "- " + team.name + " [" + team.score + "]" + "\n";
+  };
+
+  params.message.channel.send({embed: embedMsg});
+}
