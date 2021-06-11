@@ -21,6 +21,7 @@ db.ref('/enigmas').on('value', (snapshot) => {
     for (var i in data.teams) {
       global.teams.push(data.teams[i]);
     }
+    global.teams.sort((a,b) => (a.score < b.score) ? 1 : -1 );
     console.log(global.teams);
   }
 });
@@ -49,6 +50,7 @@ const commands_not_in_dm = {
   'contact': contact.triggerMessage,
   'help': help.helpMessage,
   'sendtemplate': admin_commands.sendTemplate,
+  'leaderboard': teams.leaderboard,
 }
 
 const commands_in_dm = {
