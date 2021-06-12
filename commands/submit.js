@@ -4,16 +4,7 @@ exports.submitAnswer = (params) => {
 
     let team = global.teams.filter(team => msg.author.id in team.players);
     if (team.length == 0) { 
-      msg.author.send({embed: {
-        title: 'Attention',
-        description: 'Vous n\'appartenez pas encore à une équipe !',
-        fields: [
-          {
-            name: 'Vous vous sentez seul...',
-            value: 'Vous pouvez créer une équipe ou même en rejoindre une!'
-          }
-        ]
-      }});
+      msg.author.send({embed: params.config.teams.notInTeam});
       return;
     }
     team = team[0];
@@ -21,7 +12,7 @@ exports.submitAnswer = (params) => {
     if (msg.author.id in global.users) {
         const timeBetween = (new Date() - global.users[msg.author.id]["submit"])/1000;
         if (timeBetween <= timeBetweenSubmit) {
-            msg.author.send("Vous ne pouvez submit que toutes les 10 min");
+            msg.author.send(params.config.time.submit);
             return;
         }
     } else {
@@ -37,11 +28,7 @@ exports.submitAnswer = (params) => {
 
 function congratzMsg(params, team, enigmaNumber) {
     const generalChanelID = "851361677601275914";
-    params.client.channels.cache.get(generalChanelID).send({
-        embed: {
-            title: 'Félicitations',
-            description: 'Les **' + team.name + '** viennent de résoudre l\'énigme '+ enigmaNumber + "\nIls ont " + team.score + " pts!",
-            color: "#FF8849"
-        }
-    });
+    let embedMsg = params.config.submit.congratz;
+    embedMsg.description = embedMsg.description.replace("team.name", team.name).replace("enigmaNumber",enigmaNumber).replace("team.score", team.score);
+    params.client.channels.cache.get(generalChanelID).send({embed: embedMsg});
 }

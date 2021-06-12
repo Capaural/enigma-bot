@@ -12,7 +12,7 @@ exports.report = (params) => {
     if (msg.author.id in global.users) {
         const timeBetween = (new Date() - global.users[msg.author.id]["report"]) / 1000;
         if (timeBetween <= timeBetweenReport) {
-            msg.author.send("Vous ne pouvez report que toutes les heures");
+            msg.author.send(params.config.time.report);
             return;
         }
     } else {
