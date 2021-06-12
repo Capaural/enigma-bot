@@ -8,29 +8,21 @@ exports.createTeam = (params) => {
   const args = msg.content.split(' ');
 
   if (args.length != 2) {
-    msg.author.send('Call the help function here');
+    msg.author.send({embed: params.config.help.dm});
     return;
   }
 
   const teamName = args[1];
 
   if (teamName.length > 31) {
-    msg.author.send('Call the help function here');
+    msg.author.send({embed: params.config.help.dm});
     return;
   }
 
   const alreadyInTeam = global.teams.filter(team => msg.author.id in team.players);
   if (alreadyInTeam.length != 0) {
-    const embedMsg = {
-      title: 'Attention',
-      description: 'Vous appartenez déjà à une équipe !',
-      fields: [
-        {
-          name: 'Code d\'équipe: ' + alreadyInTeam[0].teamID,
-          value: 'Ce code est personnel partagez le uniquement avec votre coéquipier'
-        }
-      ]
-    }
+    const embedMsg = params.config.teams.alreadyInTeam;
+    embedMsg.fields.name += alreadyInTeam[0].teamID;
     msg.author.send({ embed: embedMsg });
     return;
   }
@@ -52,20 +44,10 @@ exports.createTeam = (params) => {
   });
 
 
-  const embedMsg = {
-    title: 'Félicitations',
-    description: 'Votre équipe : ' + teamName + ' est créée !',
-    fields: [
-      {
-        name: 'Jouer à plusieurs',
-        value: 'Voici le code pour qu\'une personne puisse rejoindre votre équipe.'
-      },
-      {
-        name: 'Code d\'équipe: ' + teamID,
-        value: 'Ce code est personnel partageait le uniquement avec votre coequipier'
-      }
-    ]
-  }
+  let embedMsg = params.config.teams.create;
+  embedMsg.description = embedMsg.description.replace('teamName', teamName);
+  embedMsg.fields[1].name = embedMsg.fields[1].name.replace('teamID', teamID);
+
   msg.author.send({ embed: embedMsg });
 }
 
@@ -75,7 +57,7 @@ exports.joinTeam = (params) => {
   const args = msg.content.split(' ');
 
   if (args.length != 2) {
-    msg.author.send('Call the help function here');
+    msg.author.send({embed: params.config.help.dm});
     return;
   }
 
@@ -86,38 +68,22 @@ exports.joinTeam = (params) => {
 
   const alreadyInTeam = global.teams.filter(team => msg.author.id in team.players);
   if (alreadyInTeam.length != 0) {
-    embedMsg = {
-      title: 'Attention',
-      description: 'Vous appartenez déjà à une équipe !',
-      fields: [
-        {
-          name: 'Code d\'équipe: ' + alreadyInTeam[0].teamID,
-          value: 'Ce code est personnel partagez le uniquement avec votre coéquipier'
-        }
-      ]
-    }
+    embedMsg = params.config.teams.alreadyInTeam;
+    embedMsg.fields.name += alreadyInTeam[0].teamID;
     msg.author.send({ embed: embedMsg });
     return;
   }
 
 
   if (foundedTeam.length == 0) {
-    embedMsg = {
-      title: 'Erreur',
-      description: 'Ce code d\'équipe n\'existe pas...',
-    }
-    msg.author.send({ embed: embedMsg });
+    msg.author.send({ embed: params.config.teams.doesNotExists });
     return;
   }
 
   foundedTeam = Team.fromJSON(foundedTeam[0]);
 
   if (foundedTeam.players.length == 2) {
-    embedMsg = {
-      title: 'Erreur',
-      description: 'Cette équipe est déjà pleine',
-    }
-    msg.author.send({ embed: embedMsg });
+    msg.author.send({ embed: params.config.teams.full });
     return;
   }
   foundedTeam.players[msg.author.id] = new Player(msg.author.id, msg.author.username);
@@ -130,10 +96,8 @@ exports.joinTeam = (params) => {
     }
   });
 
-  embedMsg = {
-    title: 'Félications',
-    description: 'Vous venez de rejoindre l\'équipe des ' + foundedTeam.name + '\nBonne chance pour les épreuves!',
-  }
+  embedMsg = params.config.teams.join;
+  embedMsg.description = embedMsg.description.replace("foundedTeam.name", foundedTeam.name);
   msg.author.send({ embed: embedMsg });
 }
 
@@ -146,16 +110,7 @@ exports.infosTeam = (params) => {
 
   let team = global.teams.filter(team => msg.author.id in team.players);
   if (team.length == 0) {
-    embedMsg = {
-      title: 'Attention',
-      description: 'Vous n\'appartenez pas encore à une équipe !',
-      fields: [
-        {
-          name: 'Vous vous sentez seul...',
-          value: 'Vous pouvez créer une équipe ou même en rejoindre une!'
-        }
-      ]
-    }
+    embedMsg = params.config.teams.notInTeam;
   } else {
     team = Team.fromJSON(team[0]);
     playersInTeam = "";
@@ -164,42 +119,19 @@ exports.infosTeam = (params) => {
       playersInTeam += team.players[player].username + "\n";
     }
 
-
-    embedMsg = {
-      title: 'Informations',
-      description: 'Voici les informations de votre équipe:',
-      fields: [
-        {
-          name: 'Nom de votre équipe',
-          value: team.name
-        },
-        {
-          name: 'Code de votre équipe',
-          value: team.teamID
-        },
-        {
-          name: 'Score',
-          value: team.score
-        },
-        {
-          name: 'Membres',
-          value: playersInTeam
-        },
-      ]
-    }
-
+    embedMsg = params.config.teams.infos;
+    embedMsg.fields[0].value = team.name;
+    embedMsg.fields[1].value = team.teamID;
+    embedMsg.fields[2].value = team.score;
+    embedMsg.fields[3].value = playersInTeam;
   }
   msg.author.send({ embed: embedMsg });
 }
 
 exports.leaderboard = (params) => {
-  const icons = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"];
+  const icons = params.config.teams.icons;
 
-  let embedMsg = {
-    title: 'Leaderboard',
-    description: '',
-    color: "#6200EE"
-  };
+  let embedMsg = params.config.teams.leaderboard;
 
   for (let i = 0; i < Math.min(10,global.teams.length); i++) {
     const team = global.teams[i];

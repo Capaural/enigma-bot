@@ -9,7 +9,7 @@ exports.sendTemplate = (params) => {
 
   // Prevent access to non admin users
   if (!(utils.checkIfUserHasAdminPermissions(uid))) {
-    channel.send("Tu n'as pas la permission d'utiliser cette commande.");
+    channel.send(params.config.unauthorized);
     return;
   }
 

@@ -34,6 +34,7 @@ const contact = require('./commands/contact');
 const report = require('./commands/report');
 const submit = require('./commands/submit');
 const admin_commands = require('./commands/admin');
+const config = require('./utils/config').config;
 
 const timeBetweenSubmit = 10;
 global.users = {}
@@ -81,7 +82,8 @@ client.on('message', message => {
   const function_params = {
     message: message,
     db: db,
-    client: client
+    client: client,
+    config: config
   }
 
   const map = isDM ? commands_in_dm : commands_not_in_dm;
