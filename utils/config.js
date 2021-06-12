@@ -26,5 +26,11 @@ exports.config = {
     time: {
         submit: "Vous ne pouvez submit que toutes les 10 min",
         report: "Vous ne pouvez report que toutes les heures"
+    },
+    infos: {
+        title: 'Informations',
+        description: 'Vous êtes teamNumber équipes à participer.\n enigmaNumber énigmes ont été créées pour vous et pour le moment, il y a eu validationNumber validations.',
+        color: "#288BA8",
+        fields: []
     }
 }
