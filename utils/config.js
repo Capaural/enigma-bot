@@ -3,34 +3,38 @@ const teams = require('./config/teams');
 const submit = require('./config/submit');
 
 exports.config = {
-    help: {
-        general: help.general,
-        dm: help.dm
-    },
-    teams: {
-        alreadyInTeam: teams.alreadyInTeam,
-        full: teams.full,
-        doesNotExists: teams.doesNotExists,
-        notInTeam: teams.notInTeam,
-        infos: teams.infos,
-        leaderboard: teams.leaderboard,
-        icons: teams.icons,
-        join: teams.join,
-        create: teams.create,
-    },
-    submit: {
-        congratz: submit.congratz,
-    },
-    unauthorized: "Tu n'as pas la permission d'utiliser cette commande.",
-    triggeredDM: 'Je t\'écoute coco.',
-    time: {
-        submit: "Vous ne pouvez submit que toutes les 10 min",
-        report: "Vous ne pouvez report que toutes les heures"
-    },
-    infos: {
-        title: 'Informations',
-        description: 'Vous êtes teamNumber équipes à participer.\n enigmaNumber énigmes ont été créées pour vous et pour le moment, il y a eu validationNumber validations.',
-        color: "#288BA8",
-        fields: []
-    }
+	help: {
+		general: help.general,
+		dm: help.dm
+	},
+	teams: {
+		alreadyInTeam: teams.alreadyInTeam,
+		full: teams.full,
+		doesNotExists: teams.doesNotExists,
+		notInTeam: teams.notInTeam,
+		infos: teams.infos,
+		leaderboard: teams.leaderboard,
+		icons: teams.icons,
+		join: teams.join,
+		create: teams.create,
+	},
+	submit: {
+		congratz: submit.congratz,
+	},
+	unauthorized: "Tu n'as pas la permission d'utiliser cette commande.",
+	triggeredDM: 'Je t\'écoute coco.',
+	time: {
+		submit: "Vous ne pouvez submit que toutes les 10 min",
+		report: "Vous ne pouvez report que toutes les heures"
+	},
+	infos: {
+		title: 'Informations',
+		description: 'Vous êtes teamNumber équipes à participer.\n enigmaNumber énigmes ont été créées pour vous et pour le moment, il y a eu validationNumber validations.',
+		color: "#288BA8",
+		fields: []
+	},
+	create_enigma: {
+		channelID: '853333392443179008',
+		wrong_channel_error_message: 'Veuillez utiliser cette commande dans le salon approprié.'
+	}
 }

@@ -52,6 +52,7 @@ const commands_not_in_dm = {
   'contact': contact.triggerMessage,
   'help': help.helpMessage,
   'sendtemplate': admin_commands.sendTemplate,
+  'createenigma': admin_commands.createEnigma,
   'leaderboard': teams.leaderboard,
   'infos': teams.globalInfos,
 }
@@ -87,6 +88,8 @@ client.on('message', message => {
     client: client,
     config: config
   }
+
+  console.log(command);
 
   const map = isDM ? commands_in_dm : commands_not_in_dm;
   const type = (map[command] !== undefined) ? command : 'help';
