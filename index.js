@@ -11,18 +11,19 @@ admin.initializeApp({
 
 const db = admin.database();
 db.ref('/enigmas').on('value', (snapshot) => {
-  // console.log("Change in DB:")
-  // console.log(snapshot.val());
-
   const data = snapshot.val();
   if (data) {
-    global.enigmas = data;
+    global.enigmas = [];
+    for (var i in data.solutions) {
+      global.enigmas.push(data.solutions[i]);
+    }
+    console.log(global.enigmas);
+
     global.teams = [];
     for (var i in data.teams) {
       global.teams.push(data.teams[i]);
     }
     global.teams.sort((a,b) => (a.score < b.score) ? 1 : -1 );
-    console.log(global.teams);
   }
 });
 
@@ -52,6 +53,7 @@ const commands_not_in_dm = {
   'help': help.helpMessage,
   'sendtemplate': admin_commands.sendTemplate,
   'leaderboard': teams.leaderboard,
+  'infos': teams.globalInfos,
 }
 
 const commands_in_dm = {

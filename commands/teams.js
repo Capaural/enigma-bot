@@ -140,3 +140,23 @@ exports.leaderboard = (params) => {
 
   params.message.channel.send({embed: embedMsg});
 }
+
+exports.globalInfos = (params) => {
+  let embedMsg = params.config.infos;
+  const teamNumber = global.teams.length;
+  const enigmaNumber = global.enigmas.length;
+
+  embedMsg.description = embedMsg.description.replace('teamNumber', teamNumber).replace('enigmaNumber', enigmaNumber);
+
+  let validationNumber = 0;
+  global.enigmas.forEach(e => {
+    embedMsg.fields.push({
+      "name": "Enigme " + e.id,
+      "value": e.validations + " validations"
+    });
+    validationNumber += parseInt(e.validations);
+  });
+
+  embedMsg.description = embedMsg.description.replace('validationNumber', validationNumber)
+  params.message.channel.send({embed: embedMsg});
+}
