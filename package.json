@@ -25,7 +25,5 @@
     "https": "^1.0.0",
     "node": "^12.22.1"
   },
-  "devDependencies": {
-    "eslint": "^7.27.0"
-  }
+  "devDependencies": {}
 }
