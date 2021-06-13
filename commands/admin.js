@@ -29,12 +29,20 @@ exports.createEnigma = (params) => {
     channel.send(params.config.unauthorized);
     return;
   }
-
+  
   // Prevent command being used in the wrong channel
   if (!(channelID === params.config.create_enigma.channelID)) {
     channel.send(params.config.create_enigma.wrong_channel_error_message);
     return;
   }
 
-  console.log(msg.content);
+  // Remove discord's code formatting and language :
+  let command_params = params.command_params.replace(/```/g, '').split(' ');
+  command_params.shift();
+  command_params = command_params.map(el => el.replace('\n', ''));
+  command_params = command_params.join(' ');
+
+  const contents = JSON.parse(command_params);
+
+  console.log(contents);
 }
