@@ -33,7 +33,7 @@ exports.createTeam = (params) => {
     teamID = Math.random().toString(36).substring(7).toUpperCase();
   }
 
-  const newTeam = new Team(teamName, 0, teamID, { [msg.author.id]: new Player(msg.author.id, msg.author.username) });
+  const newTeam = new Team(teamName, 0, teamID, { [msg.author.id]: new Player(msg.author.id, msg.author.username) }, []);
 
   db.ref('/enigmas/teams/').child(teamID).set(newTeam.toJSON(), function (error) {
     if (error) {

@@ -2,6 +2,7 @@ exports.submitAnswer = (params) => {
     const msg = params.message;
     const args = msg.content.split(' ');
     const timeBetweenSubmit = 00;
+    let embedMsg;
 
     let team = global.teams.filter(team => msg.author.id in team.players);
     if (team.length == 0) { 
@@ -33,21 +34,38 @@ exports.submitAnswer = (params) => {
     let enigma = global.enigmas.filter(e => e.id == number);
 
     if (enigma.length == 0) {
-        msg.author.send("Cette engime n'existe pas...");
+        embedMsg = params.config.submit.doesNotExist;
+        msg.author.send({embed: embedMsg});
         return;
     }
     enigma = enigma[0];
 
     if (enigma.id > team.step) {
-        msg.author.send("Vous n'avez pas encore débloqué cette énigme");
+        embedMsg = params.config.submit.notUnlocked;
+        msg.author.send({embed: embedMsg});
         return;
     }
 
-    if (mdp == enigma.finalMDP) {
+    if (enigma.id in team.validations) {
+        embedMsg = params.config.submit.alreadySubmited;
+        msg.author.send({embed: embedMsg});
+        return;
+    }
+
+    if (mdp == enigma.final_password) {
+        let updateTeam = Team.fromJson(team);
+        let updateEnigma = Enigma.fromJson(enigma);
         // Ajouter les points de l'équipe
+        updateTeam.score += updateEnigma.max_points - (updateEnigma.validations * updateEnigma.amount_to_remove);
         // Incrementer le nombre de personnes à avoir validé l'enigme
+        updateEnigma.validations++;
+
+        // Update dans la db les infos (updateXXX)
+
         congratzMsg(params, team, number);
-        // Envoyer le message de félicitation en dm!!
+        embedMsg = params.config.submit.final;
+        embedMsg.description = embedMsg.description.replace("$number", number);
+        msg.author.send({embed: embedMsg});
         return;
     }
 

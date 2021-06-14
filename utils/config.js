@@ -20,6 +20,10 @@ exports.config = {
     },
     submit: {
         congratz: submit.congratz,
+        doesNotExist: submit.doesNotExist,
+        notUnlocked: submit.notUnlocked,
+        alreadySubmited: submit.alreadySubmited,
+        final: submit.final
     },
     unauthorized: "Tu n'as pas la permission d'utiliser cette commande.",
     triggeredDM: 'Je t\'écoute coco.',
