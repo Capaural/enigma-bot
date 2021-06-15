@@ -1,3 +1,7 @@
+const utils = require('../utils/utils');
+const Team = require('../models/teams.model');
+const  Enigma = require('../models/enigma.model')
+
 exports.submitAnswer = (params) => {
     const msg = params.message;
     const args = msg.content.split(' ');
@@ -40,27 +44,32 @@ exports.submitAnswer = (params) => {
     }
     enigma = enigma[0];
 
-    if (enigma.id > team.step) {
+    if (enigma.id > team.step + 1) {
         embedMsg = params.config.submit.notUnlocked;
         msg.author.send({embed: embedMsg});
         return;
     }
 
-    if (enigma.id in team.validations) {
+    if (team.validations && enigma.id in team.validations) {
         embedMsg = params.config.submit.alreadySubmited;
         msg.author.send({embed: embedMsg});
         return;
     }
 
     if (mdp == enigma.final_password) {
-        let updateTeam = Team.fromJson(team);
-        let updateEnigma = Enigma.fromJson(enigma);
-        // Ajouter les points de l'équipe
-        updateTeam.score += updateEnigma.max_points - (updateEnigma.validations * updateEnigma.amount_to_remove);
-        // Incrementer le nombre de personnes à avoir validé l'enigme
+        let updateTeam = Team.fromJSON(team);
+        let updateEnigma = Enigma.fromJSON(enigma);
+        updateTeam.score += updateEnigma.max_points - ((updateEnigma.validations<5?updateEnigma.validations:5) * updateEnigma.amount_to_remove);
+        if (!updateTeam.validations) {
+            updateTeam.validations = {[enigma.id]: true};
+        } else {
+            updateTeam.validations[enigma.id] = true;
+        }
         updateEnigma.validations++;
 
-        // Update dans la db les infos (updateXXX)
+        utils.saveOnDB(params.db, '/enigmas/teams/', updateTeam.teamID, updateTeam.toJSON());
+        utils.saveOnDB(params.db, '/enigmas/solutions/', updateEnigma.id, updateEnigma.toJSON());
+
 
         congratzMsg(params, team, number);
         embedMsg = params.config.submit.final;
@@ -69,16 +78,17 @@ exports.submitAnswer = (params) => {
         return;
     }
 
-    const subMDP = enigma.submdp;
+    const steps = enigma.steps;
     let index;
-    const res = subMDP.filter((s,i) => {
-        if (s.mdp == mdp)
+    const res = steps.filter((s,i) => {
+        if (s.password == mdp) {
             index = i;
-        return s.mdp == mdp
+            return s.password == mdp
+        }
     });
 
     if (res.length != 0) {
-        msg.author.send("Bravo, vous avez trouvé la partie " + index + " de l'enigme " + number + "\nIndice: " + res[0].phrase);
+        msg.author.send("Bravo, vous avez trouvé la partie " + index + " de l'enigme " + number + "\nIndice: " + res[0].next_clue);
     } else {
         msg.author.send("Non, ce n'est pas le bon mot de passe vérfie ta réponse et relit les indices...");
     }

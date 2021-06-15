@@ -1,4 +1,4 @@
-export class Enigma {
+module.exports =  class Enigma {
 
   static fromJSON(obj) {
     return new Enigma(obj.id, obj.max_points, obj.validations, obj.amount_to_remove, obj.clues, obj.final_password, obj.steps);

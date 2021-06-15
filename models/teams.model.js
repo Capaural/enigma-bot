@@ -9,7 +9,7 @@ module.exports = class Team {
     this.score = score;
     this.teamID = teamID;
     this.players = players;
-    this.validations = this.validations;
+    this.validations = validations;
     this.step = step;
   }
 

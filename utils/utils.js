@@ -14,3 +14,13 @@ exports.logPrefix = () => {
 exports.checkIfUserHasAdminPermissions = (user_id) => {
   return admins_id.includes(user_id);
 }
+
+exports.saveOnDB = (db, path, id, data) => {
+  db.ref(path).child(id).set(data, function (error) {
+    if (error) {
+      console.log("Data could not be saved." + error);
+    } else {
+      console.log(utils.logPrefix() + "Data saved successfully.");
+    }
+  });
+}
