@@ -5,7 +5,7 @@ const  Enigma = require('../models/enigma.model')
 exports.submitAnswer = (params) => {
     const msg = params.message;
     const args = msg.content.split(' ');
-    const timeBetweenSubmit = 00;
+    const timeBetweenSubmit = 600;
     let embedMsg;
 
     let team = global.teams.filter(team => msg.author.id in team.players);
@@ -59,7 +59,9 @@ exports.submitAnswer = (params) => {
     if (mdp == enigma.final_password) {
         let updateTeam = Team.fromJSON(team);
         let updateEnigma = Enigma.fromJSON(enigma);
-        updateTeam.score += updateEnigma.max_points - ((updateEnigma.validations<5?updateEnigma.validations:5) * updateEnigma.amount_to_remove);
+        const deltaScore = updateEnigma.max_points - ((updateEnigma.validations<5?updateEnigma.validations:5) * updateEnigma.amount_to_remove);
+        updateTeam.score += deltaScore;
+        updateTeam.players[msg.author.id].score += deltaScore;
         if (!updateTeam.validations) {
             updateTeam.validations = {[enigma.id]: true};
         } else {
@@ -71,7 +73,7 @@ exports.submitAnswer = (params) => {
         utils.saveOnDB(params.db, '/enigmas/solutions/', updateEnigma.id, updateEnigma.toJSON());
 
 
-        congratzMsg(params, team, number);
+        congratzMsg(params, updateTeam, number);
         embedMsg = params.config.submit.final;
         embedMsg.description = embedMsg.description.replace("$number", number);
         msg.author.send({embed: embedMsg});

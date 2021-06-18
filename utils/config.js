@@ -1,6 +1,7 @@
 const help = require('./config/help');
 const teams = require('./config/teams');
 const submit = require('./config/submit');
+const rules = require('./config/rules');
 
 exports.config = {
     help: {
@@ -17,6 +18,7 @@ exports.config = {
         icons: teams.icons,
         join: teams.join,
         create: teams.create,
+        nameIsAlreadyUsed: teams.nameIsAlreadyUsed,
     },
     submit: {
         congratz: submit.congratz,
@@ -27,6 +29,7 @@ exports.config = {
     },
     unauthorized: "Tu n'as pas la permission d'utiliser cette commande.",
     triggeredDM: 'Je t\'écoute coco.',
+    rulesMessage: rules.rulesMessage,
     time: {
         submit: "Vous ne pouvez submit que toutes les 10 min",
         report: "Vous ne pouvez report que toutes les heures"
