@@ -20,7 +20,7 @@ module.exports = class Team {
       'step': this.step,
       'teamID': this.teamID,
       'players': this.players,
-      'validations': this.validations
+      'validations': this.validations?this.validations:""
     }
   }
 }
