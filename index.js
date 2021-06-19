@@ -36,6 +36,7 @@ const report = require('./commands/report');
 const submit = require('./commands/submit');
 const admin_commands = require('./commands/admin');
 const config = require('./utils/config').config;
+const rules = require('./commands/rules');
 
 global.users = {}
 
@@ -54,6 +55,7 @@ const commands_not_in_dm = {
   'createenigma': admin_commands.createEnigma,
   'leaderboard': teams.leaderboard,
   'infos': teams.globalInfos,
+  'rules': rules.rulesMessage
 }
 
 const commands_in_dm = {
@@ -63,6 +65,7 @@ const commands_in_dm = {
   'report': report.report,
   'submit': submit.submitAnswer,
   'help': help.DMHelpMessage,
+  'rules': rules.rulesMessage
 }
 
 

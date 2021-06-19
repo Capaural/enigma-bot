@@ -80,3 +80,8 @@ exports.create = {
     }
   ]
 }
+
+exports.nameIsAlreadyUsed = {
+  title: 'Zut...',
+  description: 'Ce nom d\'équipe est déjà utilisé!\nVous devez en choisir un nouveau...',
+}
