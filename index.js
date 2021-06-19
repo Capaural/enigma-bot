@@ -17,7 +17,7 @@ db.ref('/enigmas').on('value', (snapshot) => {
     for (var i in data.solutions) {
       global.enigmas.push(data.solutions[i]);
     }
-    console.log(global.enigmas);
+    // console.log(global.enigmas);
 
     global.teams = [];
     for (var i in data.teams) {
@@ -38,7 +38,6 @@ const admin_commands = require('./commands/admin');
 const config = require('./utils/config').config;
 const rules = require('./commands/rules');
 
-const timeBetweenSubmit = 10;
 global.users = {}
 
 
@@ -53,6 +52,7 @@ const commands_not_in_dm = {
   'contact': contact.triggerMessage,
   'help': help.helpMessage,
   'sendtemplate': admin_commands.sendTemplate,
+  'createenigma': admin_commands.createEnigma,
   'leaderboard': teams.leaderboard,
   'infos': teams.globalInfos,
   'rules': rules.rulesMessage
@@ -76,19 +76,31 @@ client.on('message', message => {
     return;
   }
 
-  const args = message.content.split(' ');
+  let args = message.content.split(' ');
   if (args[0] == prefix) {
     args.shift();
   }
 
+  // This is needed because when creating a new Enigma, the params start with a 
+  // line feed and not a space
+  if (args[0].includes('\n')) {
+    let first_args = args[0].split('\n').reverse();
+    args.shift();
+    for (const element of first_args) {
+      args.unshift(element);
+    }
+  }
+
   const command = args.shift().toLowerCase();
   const parameters = args.join(' ').toLowerCase();
+  // console.log(parameters);
 
   const function_params = {
     message: message,
     db: db,
     client: client,
-    config: config
+    config: config,
+    command_params: parameters
   }
 
   const map = isDM ? commands_in_dm : commands_not_in_dm;
