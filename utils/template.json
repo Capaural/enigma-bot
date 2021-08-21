@@ -1,5 +1,6 @@
 {
 	"id": 0.0,
+	"unlocked": false,
 	"max_points": 0,
 	"validations": 0,
 	"amount_to_remove": 0,

@@ -4,7 +4,7 @@ const { gitlab_token } = require('../private/creds.json');
 
 exports.report = (params) => {
 	const client = params.client;
-	const reportChannelID = "851361677601275914";
+	const reportChannelID = params.config.channel_ids.report;
 	const msg = params.message;
 	const timeBetweenReport = 3600;
 	let args = msg.content.split(' ');
@@ -41,7 +41,8 @@ exports.report = (params) => {
 			console.log(`statusCode: ${res.statusCode}`)
 		})
 		.catch((error) => {
-			console.error(error)
+			// console.error(error)
+			utils.saveInLog([params.client.user.username, "[-] Error during the report: ".concat(error)]);
 		})
 
 	const embedMsg = {

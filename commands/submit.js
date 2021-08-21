@@ -8,12 +8,8 @@ exports.submitAnswer = (params) => {
 	const timeBetweenSubmit = 600;
 	let embedMsg;
 
-	let team = global.teams.filter(team => msg.author.id in team.players);
-	if (team.length == 0) {
-		msg.author.send({ embed: params.config.teams.notInTeam });
-		return;
-	}
-	team = team[0];
+	let team;
+	if (!(team = utils.userInTeam(params))) { return; }
 
 	if (args.length != 3) {
 		msg.author.send({ embed: params.config.help.dm });
@@ -29,10 +25,11 @@ exports.submitAnswer = (params) => {
 			return;
 		}
 	} else {
-		global.users[msg.author.id] = {
-			"submit": new Date(),
-			"report": new Date()
-		};
+		// TODO: verfier si ca empeche pas un utilisateur de submit et de pouvoir report sans attendre... Parce que la je crois que si
+		// global.users[msg.author.id] = {
+		// 	"submit": new Date(),
+		// 	"report": new Date()
+		// };
 	}
 
 	let enigma = global.enigmas.filter(e => e.id == number);
@@ -44,13 +41,13 @@ exports.submitAnswer = (params) => {
 	}
 	enigma = enigma[0];
 
-	if (enigma.id > team.step + 1) {
+	if (parseFloat(enigma.id.toString().replace(",", ".")) > team.step + 1) {
 		embedMsg = params.config.submit.notUnlocked;
 		msg.author.send({ embed: embedMsg });
 		return;
 	}
 
-	if (team.validations && enigma.id in team.validations) {
+	if (team.validations && team.validations.includes(enigma.id)) {
 		embedMsg = params.config.submit.alreadySubmited;
 		msg.author.send({ embed: embedMsg });
 		return;
@@ -62,10 +59,11 @@ exports.submitAnswer = (params) => {
 		const deltaScore = updateEnigma.max_points - ((updateEnigma.validations < 5 ? updateEnigma.validations : 5) * updateEnigma.amount_to_remove);
 		updateTeam.score += deltaScore;
 		updateTeam.players[msg.author.id].score += deltaScore;
+		(updateTeam.step + 1) == enigma.id ? updateTeam.step++ : null;
 		if (!updateTeam.validations) {
-			updateTeam.validations = { [enigma.id]: true };
+			updateTeam.validations = [enigma.id];
 		} else {
-			updateTeam.validations[enigma.id] = true;
+			updateTeam.validations.push(enigma.id);
 		}
 		updateEnigma.validations++;
 
@@ -73,9 +71,9 @@ exports.submitAnswer = (params) => {
 		utils.saveToDB(params.db, '/enigmas/solutions/', updateEnigma.id, updateEnigma.toJSON());
 
 
-		congratzMsg(params, updateTeam, number);
-		embedMsg = params.config.submit.final;
-		embedMsg.description = embedMsg.description.replace("$number", number);
+		// congratzMsg(params, updateTeam, number);
+		embedMsg = JSON.parse(JSON.stringify(params.config.submit.final));
+		embedMsg.description = embedMsg.description.replace("$number", number).replace("$pts", deltaScore);
 		msg.author.send({ embed: embedMsg });
 		return;
 	}

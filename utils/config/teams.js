@@ -1,87 +1,104 @@
 exports.alreadyInTeam = {
-	title: 'Attention',
-	description: 'Vous appartenez déjà à une équipe !',
+	title: "Attention",
+	description: "Vous appartenez déjà à une équipe !",
 	fields: [
 		{
-			name: 'Code d\'équipe: ',
-			value: 'Ce code est personnel partagez le uniquement avec votre coéquipier'
-		}
-	]
-}
+			name: "Code d'équipe: ",
+			value:
+				"Ce code est personnel partagez le uniquement avec votre coéquipier",
+		},
+	],
+};
 
 exports.full = {
-	title: 'Erreur',
-	description: 'Cette équipe est déjà pleine',
-}
+	title: "Erreur",
+	description: "Cette équipe est déjà pleine",
+};
 
 exports.doesNotExists = {
-	title: 'Erreur',
-	description: 'Ce code d\'équipe n\'existe pas...',
-}
+	title: "Erreur",
+	description: "Ce code d'équipe n'existe pas...",
+};
 
 exports.notInTeam = {
-	title: 'Attention',
-	description: 'Vous n\'appartenez pas encore à une équipe !',
+	title: "Attention",
+	description: "Vous n'appartenez pas encore à une équipe !",
 	fields: [
 		{
-			name: 'Vous vous sentez seul...',
-			value: 'Vous pouvez créer une équipe ou même en rejoindre une!'
-		}
-	]
-}
+			name: "Vous vous sentez seul...",
+			value: "Vous pouvez créer une équipe ou même en rejoindre une!",
+		},
+	],
+};
 
 exports.infos = {
-	title: 'Informations',
-	description: 'Voici les informations de votre équipe:',
+	title: "Informations",
+	description: "Voici les informations de votre équipe:",
 	fields: [
 		{
-			name: 'Nom de votre équipe',
-			value: ''
+			name: "Nom de votre équipe",
+			value: "",
 		},
 		{
-			name: 'Code de votre équipe',
-			value: ''
+			name: "Code de votre équipe",
+			value: "",
 		},
 		{
-			name: 'Score',
-			value: ''
+			name: "Score",
+			value: "",
 		},
 		{
-			name: 'Membres',
-			value: ''
+			name: "Membres",
+			value: "",
 		},
-	]
-}
+		{
+			name: "✅ Enigmes faites ✅",
+			value: "",
+		},
+		{
+			name: "❔ Enigmes à faire ❔",
+			value: "",
+		},
+		{
+			name: "❌ Enigmes par encore débloquées ❌",
+			value: "",
+		},
+	],
+};
 
 exports.leaderboard = {
-	title: 'Leaderboard',
-	description: '',
-	color: "#6200EE"
-}
+	title: "Leaderboard",
+	description: "",
+	color: "#6200EE",
+};
 
-exports.icons = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
+exports.icons = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
 exports.join = {
-	title: 'Félications',
-	description: 'Vous venez de rejoindre l\'équipe des **foundedTeam.name**!\nBonne chance pour les épreuves!',
-}
+	title: "Félications",
+	description:
+		"Vous venez de rejoindre l'équipe des **foundedTeam.name**!\nBonne chance pour les épreuves!",
+};
 
 exports.create = {
-	title: 'Félicitations',
-	description: 'Votre équipe : teamName est créée !',
+	title: "Félicitations",
+	description: "Votre équipe : teamName est créée !",
 	fields: [
 		{
-			name: 'Jouer à plusieurs',
-			value: 'Voici le code pour qu\'une personne puisse rejoindre votre équipe.'
+			name: "Jouer à plusieurs",
+			value:
+				"Voici le code pour qu'une personne puisse rejoindre votre équipe.",
 		},
 		{
-			name: 'Code d\'équipe: teamID',
-			value: 'Ce code est personnel partageait le uniquement avec votre coequipier'
-		}
-	]
-}
+			name: "Code d'équipe: teamID",
+			value:
+				"Ce code est personnel partageait le uniquement avec votre coequipier",
+		},
+	],
+};
 
 exports.nameIsAlreadyUsed = {
-	title: 'Zut...',
-	description: 'Ce nom d\'équipe est déjà utilisé!\nVous devez en choisir un nouveau...',
-}
+	title: "Zut...",
+	description:
+		"Ce nom d'équipe est déjà utilisé!\nVous devez en choisir un nouveau...",
+};
